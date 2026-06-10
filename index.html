@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Lexify v1.5 — Word Explorer</title>
+    <title>Lexify v1.6 — Word Explorer</title>
     <meta name="description" content="Explore any word deeply — definitions, etymology, tenses, synonyms, and more in English, Persian, and Turkish.">
     <meta name="theme-color" content="#1d1d1f">
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -44,7 +44,6 @@
             width: 100%;
         }
 
-        /* Navbar */
         nav {
             position: sticky;
             top: 0;
@@ -103,7 +102,6 @@
             background: rgba(245, 245, 247, 0.12);
         }
 
-        /* Main */
         main {
             flex: 1;
             padding: 4rem 0;
@@ -134,7 +132,6 @@
             font-weight: 300;
         }
 
-        /* Search Bar */
         .search-container {
             max-width: 48rem;
             margin: 0 auto 3rem;
@@ -225,7 +222,6 @@
             cursor: not-allowed;
         }
 
-        /* Results */
         .results {
             margin-top: 2rem;
         }
@@ -351,7 +347,6 @@
             }
         }
 
-        /* Footer */
         footer {
             border-top: 1px solid rgba(245, 245, 247, 0.05);
             padding: 3rem 0;
@@ -440,6 +435,13 @@
             line-height: 1.6;
         }
 
+        .version {
+            color: rgba(245, 245, 247, 0.1);
+            font-size: 0.7rem;
+            margin-top: 1rem;
+            font-weight: 500;
+        }
+
         .error-message {
             background: rgba(239, 68, 68, 0.1);
             border: 1px solid rgba(239, 68, 68, 0.3);
@@ -449,16 +451,6 @@
             margin-bottom: 1rem;
             font-size: 0.875rem;
             animation: fadeInUp 0.6s cubic-bezier(0.23, 1, 0.32, 1);
-        }
-
-        .success-message {
-            background: rgba(34, 197, 94, 0.1);
-            border: 1px solid rgba(34, 197, 94, 0.3);
-            color: rgba(86, 180, 86, 0.9);
-            padding: 1rem;
-            border-radius: 0.75rem;
-            margin-bottom: 1rem;
-            font-size: 0.875rem;
         }
 
         @media (max-width: 640px) {
@@ -495,7 +487,6 @@
     </style>
 </head>
 <body>
-    <!-- Navbar -->
     <nav>
         <div class="container">
             <div class="nav-content">
@@ -511,16 +502,13 @@
         </div>
     </nav>
 
-    <!-- Main Content -->
     <main>
         <div class="container">
-            <!-- Hero -->
             <div class="hero">
                 <h1>Explore any word.</h1>
                 <p>Deep linguistic analysis powered by AI — definitions, etymology, tenses, and more.</p>
             </div>
 
-            <!-- Search -->
             <form class="search-container" onsubmit="handleSearch(event)">
                 <div class="search-form">
                     <select id="language" class="lang-selector">
@@ -543,12 +531,10 @@
                 </div>
             </form>
 
-            <!-- Results -->
             <div id="results"></div>
         </div>
     </main>
 
-    <!-- Footer -->
     <footer>
         <div class="container">
             <div class="creator-section">
@@ -577,6 +563,7 @@
             <div class="rights-text">
                 This website was created, designed, and published by Arvin Jamebozorg. Unauthorized reproduction, copying, or distribution of any content on this site is strictly prohibited. All creative rights belong exclusively to Arvin Jamebozorg.
             </div>
+            <div class="version">v1.6</div>
         </div>
     </footer>
 
@@ -584,169 +571,41 @@
         const HISTORY_KEY = 'lexify_history';
         const MAX_HISTORY = 20;
 
-        // Comprehensive word database
         const wordDatabase = {
             en: {
-                'hello': {
-                    word: 'hello',
-                    phonetic: '/həˈloʊ/',
-                    partOfSpeech: ['interjection', 'noun'],
-                    definitions: [
-                        { pos: 'interjection', definition: 'Used as a greeting or to begin a conversation.', example: 'Hello! How are you today?' },
-                        { pos: 'noun', definition: 'An utterance of the word "hello" as a greeting.', example: 'She gave him a friendly hello.' }
-                    ],
-                    etymology: 'From Middle English, possibly from Old English "hǽl" meaning "health". The modern greeting use became popular in the 19th century with the telephone.',
-                    synonyms: ['hi', 'hey', 'greetings', 'welcome'],
-                    antonyms: ['goodbye', 'farewell'],
-                    variations: {
-                        noun: { singular: 'hello', plural: 'hellos' },
-                        verb: null,
-                        adjective: null,
-                        adverb: null,
-                        derivedForms: ['helloer']
-                    },
-                    usageNotes: 'Informal and friendly. Used in both spoken and written communication.',
-                    collocations: ['say hello', 'hello world', 'hello there'],
-                    level: 'A1'
-                },
-                'serendipity': {
-                    word: 'serendipity',
-                    phonetic: '/ˌserənˈdɪpəti/',
-                    partOfSpeech: ['noun'],
-                    definitions: [
-                        { pos: 'noun', definition: 'The occurrence of events by chance in a happy or beneficial way; finding something good without looking for it.', example: 'Meeting her was pure serendipity.' }
-                    ],
-                    etymology: 'Coined by Horace Walpole in 1754, based on the Persian fairy tale "The Three Princes of Serendip" (Serendip being an old name for Sri Lanka).',
-                    synonyms: ['luck', 'chance', 'fortune', 'providence', 'kismet'],
-                    antonyms: ['misfortune', 'bad luck', 'mischance'],
-                    variations: {
-                        noun: { singular: 'serendipity', plural: 'serendipities' },
-                        verb: null,
-                        adjective: 'serendipitous',
-                        adverb: 'serendipitously',
-                        derivedForms: ['serendipitous', 'serendipitously']
-                    },
-                    usageNotes: 'Often used to describe happy accidents or fortunate discoveries. Formal and literary.',
-                    collocations: ['pure serendipity', 'sheer serendipity', 'happy serendipity'],
-                    level: 'B2'
-                },
-                'life': {
-                    word: 'life',
-                    phonetic: '/laɪf/',
-                    partOfSpeech: ['noun'],
-                    definitions: [
-                        { pos: 'noun', definition: 'The condition that distinguishes animals and plants from inorganic matter, including the capacity for growth, reproduction, and response to stimuli.', example: 'The discovery of life on other planets would be revolutionary.' },
-                        { pos: 'noun', definition: 'The period between birth and death.', example: 'She lived a full and meaningful life.' },
-                        { pos: 'noun', definition: 'A way or manner of living.', example: 'He chose a simple life in the countryside.' }
-                    ],
-                    etymology: 'From Old English "lif", related to German "Leib" (body) and Old Norse "lif". Proto-Germanic origin meaning "to remain, to persist".',
-                    synonyms: ['existence', 'living', 'vitality', 'lifespan', 'lifetime'],
-                    antonyms: ['death', 'nonexistence'],
-                    variations: {
-                        noun: { singular: 'life', plural: 'lives' },
-                        verb: null,
-                        adjective: 'lively',
-                        adverb: null,
-                        derivedForms: ['lively', 'lifelike', 'lifelong', 'lifetime']
-                    },
-                    usageNotes: 'One of the most fundamental and commonly used words in English. Can be used literally or metaphorically.',
-                    collocations: ['way of life', 'life expectancy', 'life cycle', 'life experience', 'life lesson'],
-                    level: 'A1'
-                }
+                'hello': { word: 'hello', phonetic: '/həˈloʊ/', partOfSpeech: ['interjection', 'noun'], definitions: [{ pos: 'interjection', definition: 'Used as a greeting or to begin a conversation.', example: 'Hello! How are you today?' }, { pos: 'noun', definition: 'An utterance of the word "hello" as a greeting.', example: 'She gave him a friendly hello.' }], etymology: 'From Middle English, possibly from Old English "hǽl" meaning "health". The modern greeting use became popular in the 19th century with the telephone.', synonyms: ['hi', 'hey', 'greetings', 'welcome'], antonyms: ['goodbye', 'farewell'], variations: { noun: { singular: 'hello', plural: 'hellos' }, verb: null, adjective: null, adverb: null, derivedForms: ['helloer'] }, usageNotes: 'Informal and friendly. Used in both spoken and written communication.', collocations: ['say hello', 'hello world', 'hello there'], level: 'A1' },
+                'love': { word: 'love', phonetic: '/lʌv/', partOfSpeech: ['noun', 'verb'], definitions: [{ pos: 'noun', definition: 'An intense feeling of deep affection and care for another person.', example: 'Their love for each other was evident.' }, { pos: 'verb', definition: 'To feel deep affection or care for someone.', example: 'I love my family very much.' }], etymology: 'From Old English "lufu", related to German "Liebe". Proto-Germanic origin meaning "affection, desire".', synonyms: ['affection', 'adoration', 'devotion', 'fondness'], antonyms: ['hate', 'dislike', 'aversion'], variations: { noun: { singular: 'love', plural: 'loves' }, verb: { infinitive: 'love', presentSimple: 'loves', pastSimple: 'loved', pastParticiple: 'loved', presentContinuous: 'loving' }, adjective: 'loving', adverb: 'lovingly', derivedForms: ['loving', 'lovely', 'lovable', 'lover'] }, usageNotes: 'One of the most powerful emotions. Can be used literally or metaphorically.', collocations: ['fall in love', 'true love', 'love story', 'labor of love'], level: 'A1' },
+                'beautiful': { word: 'beautiful', phonetic: '/ˈbjuːtɪfl/', partOfSpeech: ['adjective'], definitions: [{ pos: 'adjective', definition: 'Pleasing to the senses or mind; attractive and aesthetically appealing.', example: 'The sunset was beautiful.' }], etymology: 'From Middle English "beautiful", from Old French "beau" (beautiful) + "-ful". Ultimately from Latin "bellus".', synonyms: ['pretty', 'lovely', 'gorgeous', 'stunning', 'attractive'], antonyms: ['ugly', 'hideous', 'unattractive'], variations: { noun: 'beauty', verb: null, adjective: 'beautiful', adverb: 'beautifully', derivedForms: ['beauty', 'beautifully', 'beautify'] }, usageNotes: 'Commonly used to describe visual appeal. Can also describe sounds, ideas, or experiences.', collocations: ['beautiful day', 'beautiful mind', 'beautiful music'], level: 'A1' },
+                'knowledge': { word: 'knowledge', phonetic: '/ˈnɒlɪdʒ/', partOfSpeech: ['noun'], definitions: [{ pos: 'noun', definition: 'Information, understanding, or skill acquired through experience or education.', example: 'Her knowledge of history is impressive.' }], etymology: 'From Old English "cnawlæc", from "cnawan" (to know) + "-lace" (practice). Related to "know".', synonyms: ['understanding', 'learning', 'wisdom', 'expertise'], antonyms: ['ignorance', 'unawareness'], variations: { noun: { singular: 'knowledge', plural: 'knowledges' }, verb: null, adjective: 'knowledgeable', adverb: null, derivedForms: ['knowledgeable', 'knowledgeably'] }, usageNotes: 'Uncountable noun in most contexts. Refers to accumulated learning and understanding.', collocations: ['general knowledge', 'knowledge base', 'knowledge is power'], level: 'B1' },
+                'dream': { word: 'dream', phonetic: '/driːm/', partOfSpeech: ['noun', 'verb'], definitions: [{ pos: 'noun', definition: 'A sequence of images, thoughts, and sensations occurring during sleep.', example: 'I had a strange dream last night.' }, { pos: 'verb', definition: 'To experience dreams during sleep or to think about something desired.', example: 'I dream of traveling around the world.' }], etymology: 'From Old English "dream" meaning "joy, music, noise". Proto-Germanic origin.', synonyms: ['vision', 'fantasy', 'aspiration', 'hope'], antonyms: ['reality', 'nightmare'], variations: { noun: { singular: 'dream', plural: 'dreams' }, verb: { infinitive: 'dream', presentSimple: 'dreams', pastSimple: 'dreamed/dreamt', pastParticiple: 'dreamed/dreamt' }, adjective: 'dreamy', adverb: null, derivedForms: ['dreamy', 'dreamer', 'dreamland'] }, usageNotes: 'Can be literal (sleep dreams) or metaphorical (aspirations).', collocations: ['sweet dream', 'dream come true', 'chase your dreams'], level: 'A2' },
+                'adventure': { word: 'adventure', phonetic: '/ədˈventʃər/', partOfSpeech: ['noun', 'verb'], definitions: [{ pos: 'noun', definition: 'An exciting or unusual experience; a daring undertaking.', example: 'Climbing the mountain was an adventure.' }, { pos: 'verb', definition: 'To engage in daring or risky activities.', example: 'They adventured into the unknown forest.' }], etymology: 'From Old French "aventure", from Latin "adventura" meaning "things about to happen".', synonyms: ['expedition', 'journey', 'quest', 'exploit'], antonyms: ['routine', 'monotony'], variations: { noun: { singular: 'adventure', plural: 'adventures' }, verb: { infinitive: 'adventure', presentSimple: 'adventures', pastSimple: 'adventured' }, adjective: 'adventurous', adverb: 'adventurously', derivedForms: ['adventurous', 'adventurer', 'adventurously'] }, usageNotes: 'Often implies excitement and some element of risk or uncertainty.', collocations: ['grand adventure', 'adventure time', 'adventure travel'], level: 'B1' },
+                'wisdom': { word: 'wisdom', phonetic: '/ˈwɪzdəm/', partOfSpeech: ['noun'], definitions: [{ pos: 'noun', definition: 'The quality of having experience, good judgment, and understanding; deep insight.', example: 'The elder shared his wisdom with the young people.' }], etymology: 'From Old English "wisdom", from "wis" (wise) + "-dom" (condition, state). Proto-Germanic origin.', synonyms: ['insight', 'understanding', 'prudence', 'sagacity'], antonyms: ['foolishness', 'ignorance', 'stupidity'], variations: { noun: { singular: 'wisdom', plural: 'wisdoms' }, verb: null, adjective: 'wise', adverb: 'wisely', derivedForms: ['wise', 'wisely', 'wiser', 'wisest'] }, usageNotes: 'Often associated with age, experience, and deep understanding.', collocations: ['conventional wisdom', 'words of wisdom', 'ancient wisdom'], level: 'B2' },
+                'freedom': { word: 'freedom', phonetic: '/ˈfriːdəm/', partOfSpeech: ['noun'], definitions: [{ pos: 'noun', definition: 'The state of being free; the right to act or speak without restraint.', example: 'Freedom of speech is a fundamental right.' }], etymology: 'From Old English "freodom", from "freo" (free) + "-dom" (condition). Proto-Germanic origin.', synonyms: ['liberty', 'independence', 'autonomy', 'emancipation'], antonyms: ['slavery', 'captivity', 'imprisonment'], variations: { noun: { singular: 'freedom', plural: 'freedoms' }, verb: null, adjective: 'free', adverb: 'freely', derivedForms: ['free', 'freely', 'freedom-loving'] }, usageNotes: 'A fundamental human value and right. Often used in political and philosophical contexts.', collocations: ['freedom of speech', 'freedom fighter', 'personal freedom'], level: 'B1' },
+                'hope': { word: 'hope', phonetic: '/hoʊp/', partOfSpeech: ['noun', 'verb'], definitions: [{ pos: 'noun', definition: 'A feeling of expectation and desire for a positive future outcome.', example: 'I have hope for a better tomorrow.' }, { pos: 'verb', definition: 'To wish for something with expectation of its fulfillment.', example: 'I hope you have a great day.' }], etymology: 'From Old English "hopa", of uncertain origin. Possibly related to German "hoffen".', synonyms: ['optimism', 'expectation', 'aspiration', 'faith'], antonyms: ['despair', 'hopelessness', 'pessimism'], variations: { noun: { singular: 'hope', plural: 'hopes' }, verb: { infinitive: 'hope', presentSimple: 'hopes', pastSimple: 'hoped', pastParticiple: 'hoped' }, adjective: 'hopeful', adverb: 'hopefully', derivedForms: ['hopeful', 'hopefully', 'hopeless', 'hopelessness'] }, usageNotes: 'Often used to express positive expectations about the future.', collocations: ['hope for the best', 'hope against hope', 'glimmer of hope'], level: 'A2' },
+                'courage': { word: 'courage', phonetic: '/ˈkɜːrɪdʒ/', partOfSpeech: ['noun'], definitions: [{ pos: 'noun', definition: 'The ability to face fear, pain, or danger; bravery.', example: 'It took courage to speak up against injustice.' }], etymology: 'From Old French "corage", from Latin "cor" meaning "heart". The heart was considered the seat of emotions.', synonyms: ['bravery', 'valor', 'heroism', 'boldness'], antonyms: ['cowardice', 'fear', 'timidity'], variations: { noun: { singular: 'courage', plural: 'courages' }, verb: null, adjective: 'courageous', adverb: 'courageously', derivedForms: ['courageous', 'courageously', 'discourage', 'encourage'] }, usageNotes: 'Often associated with facing difficult situations or standing up for beliefs.', collocations: ['moral courage', 'take courage', 'courage of your convictions'], level: 'B1' },
+                'peace': { word: 'peace', phonetic: '/piːs/', partOfSpeech: ['noun'], definitions: [{ pos: 'noun', definition: 'A state of calm, tranquility, and freedom from conflict or war.', example: 'The treaty brought peace to the region.' }], etymology: 'From Old French "pais", from Latin "pax" meaning "peace, tranquility". Proto-Indo-European origin.', synonyms: ['tranquility', 'calm', 'serenity', 'harmony'], antonyms: ['war', 'conflict', 'turmoil'], variations: { noun: { singular: 'peace', plural: 'peaces' }, verb: null, adjective: 'peaceful', adverb: 'peacefully', derivedForms: ['peaceful', 'peacefully', 'peacekeeper', 'peacemaker'] }, usageNotes: 'Can refer to absence of war or inner tranquility.', collocations: ['world peace', 'peace of mind', 'peace treaty'], level: 'A2' }
             },
             fa: {
-                'سلام': {
-                    word: 'سلام',
-                    phonetic: '/sæˈlɑːm/',
-                    partOfSpeech: ['اسم', 'حرف ندا'],
-                    definitions: [
-                        { pos: 'حرف ندا', definition: 'کلمه‌ای برای شروع گفتگو و سلام کردن به کسی.', example: 'سلام! چطور می‌تونی؟' },
-                        { pos: 'اسم', definition: 'عمل سلام دادن و آرزوی سلامتی برای کسی.', example: 'سلام دوستانه‌ای از او دریافت کردم.' }
-                    ],
-                    etymology: 'از ریشه عربی "س ل م" که به معنی "امن بودن" و "سالم بودن" است.',
-                    synonyms: ['درود', 'احوال‌پرسی', 'خوش‌آمدی'],
-                    antonyms: ['خداحافظ', 'بدرود'],
-                    variations: {
-                        noun: { singular: 'سلام', plural: 'سلام‌ها' },
-                        verb: null,
-                        adjective: null,
-                        adverb: null,
-                        derivedForms: ['سلام‌دهنده']
-                    },
-                    usageNotes: 'غیررسمی و دوستانه. در گفتگوی شفاهی و نوشتاری استفاده می‌شود.',
-                    collocations: ['سلام کردن', 'سلام و احوال', 'سلام علیکم'],
-                    level: 'A1'
-                },
-                'زندگی': {
-                    word: 'زندگی',
-                    phonetic: '/zændəˈɡiː/',
-                    partOfSpeech: ['اسم'],
-                    definitions: [
-                        { pos: 'اسم', definition: 'وضعیتی که موجودات زنده را از مواد غیر زنده متمایز می‌کند.', example: 'کشف زندگی در سیارات دیگر انقلابی خواهد بود.' },
-                        { pos: 'اسم', definition: 'دوره بین تولد و مرگ.', example: 'او زندگی پر معنایی را سپری کرد.' },
-                        { pos: 'اسم', definition: 'شیوه و روش زندگی کردن.', example: 'او زندگی ساده‌ای در روستا برگزید.' }
-                    ],
-                    etymology: 'از ریشه ایرانی باستان "جیو" یا "جیوا" به معنی "زنده".',
-                    synonyms: ['بقا', 'هستی', 'وجود', 'حیات'],
-                    antonyms: ['مرگ', 'نیستی'],
-                    variations: {
-                        noun: { singular: 'زندگی', plural: 'زندگی‌ها' },
-                        verb: null,
-                        adjective: 'زنده',
-                        adverb: null,
-                        derivedForms: ['زنده', 'زندگانی']
-                    },
-                    usageNotes: 'یکی از اساسی‌ترین واژه‌های فارسی. می‌تواند به معنای حقیقی یا استعاری استفاده شود.',
-                    collocations: ['سبک زندگی', 'امید به زندگی', 'شرایط زندگی'],
-                    level: 'A1'
-                }
+                'سلام': { word: 'سلام', phonetic: '/sæˈlɑːm/', partOfSpeech: ['اسم', 'حرف ندا'], definitions: [{ pos: 'حرف ندا', definition: 'کلمه‌ای برای شروع گفتگو و سلام کردن به کسی.', example: 'سلام! چطور می‌تونی؟' }, { pos: 'اسم', definition: 'عمل سلام دادن و آرزوی سلامتی برای کسی.', example: 'سلام دوستانه‌ای از او دریافت کردم.' }], etymology: 'از ریشه عربی "س ل م" که به معنی "امن بودن" و "سالم بودن" است.', synonyms: ['درود', 'احوال‌پرسی', 'خوش‌آمدی'], antonyms: ['خداحافظ', 'بدرود'], variations: { noun: { singular: 'سلام', plural: 'سلام‌ها' }, verb: null, adjective: null, adverb: null, derivedForms: ['سلام‌دهنده'] }, usageNotes: 'غیررسمی و دوستانه. در گفتگوی شفاهی و نوشتاری استفاده می‌شود.', collocations: ['سلام کردن', 'سلام و احوال', 'سلام علیکم'], level: 'A1' },
+                'عشق': { word: 'عشق', phonetic: '/ˈɑʃɡ/', partOfSpeech: ['اسم'], definitions: [{ pos: 'اسم', definition: 'احساس عمیق و شدید دوستی و محبت نسبت به شخص دیگر.', example: 'عشق آنها یکی از بزرگترین داستان‌های عاشقانه بود.' }], etymology: 'از ریشه عربی "ع ش ق" که به معنی "دوست داشتن" است.', synonyms: ['محبت', 'دوستی', 'عاطفه', 'علاقه'], antonyms: ['نفرت', 'کراهت', 'بیزاری'], variations: { noun: { singular: 'عشق', plural: 'عشق‌ها' }, verb: null, adjective: 'عاشق', adverb: null, derivedForms: ['عاشق', 'عاشقانه', 'معشوق'] }, usageNotes: 'یکی از قوی‌ترین احساسات انسانی. در شاعری و ادبیات فارسی بسیار استفاده می‌شود.', collocations: ['عشق واقعی', 'عشق به وطن', 'داستان عشق'], level: 'A2' },
+                'زندگی': { word: 'زندگی', phonetic: '/zændəˈɡiː/', partOfSpeech: ['اسم'], definitions: [{ pos: 'اسم', definition: 'وضعیتی که موجودات زنده را از مواد غیر زنده متمایز می‌کند.', example: 'کشف زندگی در سیارات دیگر انقلابی خواهد بود.' }, { pos: 'اسم', definition: 'دوره بین تولد و مرگ.', example: 'او زندگی پر معنایی را سپری کرد.' }], etymology: 'از ریشه ایرانی باستان "جیو" یا "جیوا" به معنی "زنده".', synonyms: ['بقا', 'هستی', 'وجود', 'حیات'], antonyms: ['مرگ', 'نیستی'], variations: { noun: { singular: 'زندگی', plural: 'زندگی‌ها' }, verb: null, adjective: 'زنده', adverb: null, derivedForms: ['زنده', 'زندگانی'] }, usageNotes: 'یکی از اساسی‌ترین واژه‌های فارسی. می‌تواند به معنای حقیقی یا استعاری استفاده شود.', collocations: ['سبک زندگی', 'امید به زندگی', 'شرایط زندگی'], level: 'A1' },
+                'دانش': { word: 'دانش', phonetic: '/dɑˈnɑʃ/', partOfSpeech: ['اسم'], definitions: [{ pos: 'اسم', definition: 'اطلاعات، درک و مهارتی که از طریق تجربه یا آموزش کسب شده است.', example: 'دانش او درباره تاریخ فوق‌العاده است.' }], etymology: 'از ریشه ایرانی باستان "دان" به معنی "دانستن".', synonyms: ['علم', 'فهم', 'حکمت', 'تخصص'], antonyms: ['جهل', 'ناآگاهی'], variations: { noun: { singular: 'دانش', plural: 'دانش‌ها' }, verb: null, adjective: 'دانشمند', adverb: null, derivedForms: ['دانشمند', 'دانشجو', 'دانشگاه'] }, usageNotes: 'به معنای دانش و علم تراکمی است. در متون آموزشی و علمی بسیار استفاده می‌شود.', collocations: ['دانش عمومی', 'دانش تخصصی', 'دانش است قدرت'], level: 'B1' },
+                'امید': { word: 'امید', phonetic: '/ɑˈmid/', partOfSpeech: ['اسم'], definitions: [{ pos: 'اسم', definition: 'احساس انتظار و آرزو برای نتیجه‌ای مثبت در آینده.', example: 'من امید دارم فردای بهتری داشته باشیم.' }], etymology: 'از ریشه ایرانی باستان "اپی" یا "ایپی" به معنی "امید".', synonyms: ['آرزو', 'انتظار', 'خوش‌بینی', 'ایمان'], antonyms: ['ناامیدی', 'یأس', 'بدبینی'], variations: { noun: { singular: 'امید', plural: 'امید‌ها' }, verb: null, adjective: 'امیدوار', adverb: null, derivedForms: ['امیدوار', 'امیدوارانه', 'ناامید'] }, usageNotes: 'احساس مثبتی است که انسان را برای آینده تشویق می‌کند.', collocations: ['امید به بهتری', 'امید زندگی', 'نوید امید'], level: 'A2' },
+                'شجاعت': { word: 'شجاعت', phonetic: '/ʃəˈdʒɑːvət/', partOfSpeech: ['اسم'], definitions: [{ pos: 'اسم', definition: 'توانایی روبرو شدن با ترس، درد یا خطر؛ دلاوری.', example: 'شجاعت او در مقابل ظلم الهام‌بخش بود.' }], etymology: 'از ریشه عربی "ش ج ع" که به معنی "دلاور بودن" است.', synonyms: ['دلاوری', 'جسارت', 'قهرمانی', 'بی‌باکی'], antonyms: ['ترس', 'بزدلی', 'ترددی'], variations: { noun: { singular: 'شجاعت', plural: 'شجاعت‌ها' }, verb: null, adjective: 'شجاع', adverb: null, derivedForms: ['شجاع', 'شجاعانه', 'بی‌شجاع'] }, usageNotes: 'یکی از بزرگترین فضایل انسانی است. در ادبیات و تاریخ فارسی بسیار ستایش می‌شود.', collocations: ['شجاعت اخلاقی', 'شجاعت جسمانی', 'نمایش شجاعت'], level: 'B1' },
+                'صلح': { word: 'صلح', phonetic: '/sɔlɑx/', partOfSpeech: ['اسم'], definitions: [{ pos: 'اسم', definition: 'حالتی از آرامش، آرام‌ش و عدم تنازع یا جنگ.', example: 'معاهده صلح منطقه را آرام کرد.' }], etymology: 'از ریشه عربی "ص ل ح" که به معنی "درست بودن" و "آرام بودن" است.', synonyms: ['آرام‌ش', 'هماهنگی', 'سازش', 'آتش‌بس'], antonyms: ['جنگ', 'تنازع', 'درگیری'], variations: { noun: { singular: 'صلح', plural: 'صلح‌ها' }, verb: null, adjective: 'صلح‌آمیز', adverb: null, derivedForms: ['صلح‌آمیز', 'صلح‌جو', 'صلح‌نامه'] }, usageNotes: 'یکی از بنیادی‌ترین ارزش‌های انسانی است.', collocations: ['صلح جهانی', 'معاهده صلح', 'دوران صلح'], level: 'B1' },
+                'خیال': { word: 'خیال', phonetic: '/xiˈɑːl/', partOfSpeech: ['اسم'], definitions: [{ pos: 'اسم', definition: 'تصور ذهنی یا ایده‌ای که در ذهن تشکیل می‌شود.', example: 'خیال جالبی برای پروژه جدید داشتم.' }], etymology: 'از ریشه عربی "خ ي ل" که به معنی "تصور کردن" است.', synonyms: ['ایده', 'فکر', 'تصور', 'نظر'], antonyms: ['واقعیت', 'حقیقت'], variations: { noun: { singular: 'خیال', plural: 'خیال‌ها' }, verb: null, adjective: 'خیالی', adverb: null, derivedForms: ['خیالی', 'خیال‌پرداز', 'خیال‌بافی'] }, usageNotes: 'می‌تواند خوب یا بد باشد. اغلب در شاعری و ادبیات استفاده می‌شود.', collocations: ['خیال کردن', 'خیال خام', 'خیال پرواز'], level: 'A2' },
+                'جمال': { word: 'جمال', phonetic: '/dʒəˈmɑːl/', partOfSpeech: ['اسم'], definitions: [{ pos: 'اسم', definition: 'کیفیت زیبایی و جذابیت بصری یا ذهنی.', example: 'جمال طبیعت این منطقه بی‌نظیر است.' }], etymology: 'از ریشه عربی "ج م ل" که به معنی "زیبا بودن" است.', synonyms: ['زیبایی', 'ظرافت', 'دلکشی', 'جاذبه'], antonyms: ['زشتی', 'ناپاکی', 'ناخوشایندی'], variations: { noun: { singular: 'جمال', plural: 'جمال‌ها' }, verb: null, adjective: 'جمیل', adverb: null, derivedForms: ['جمیل', 'جمال‌پرستی', 'جمال‌شناس'] }, usageNotes: 'مفهوم فلسفی و هنری است. در ادبیات فارسی بسیار ستایش می‌شود.', collocations: ['جمال طبیعت', 'جمال زن', 'جمال معنوی'], level: 'B2' }
             },
             tr: {
-                'merhaba': {
-                    word: 'merhaba',
-                    phonetic: '/merˈhɑbɑ/',
-                    partOfSpeech: ['isim', 'ünlem'],
-                    definitions: [
-                        { pos: 'ünlem', definition: 'Birini selamlamak veya bir konuşmaya başlamak için kullanılan sözcük.', example: 'Merhaba! Nasılsın?' },
-                        { pos: 'isim', definition: '"Merhaba" sözcüğünün söylenmesi; selamlaşma.', example: 'Arkadaşımdan dostça bir merhaba aldım.' }
-                    ],
-                    etymology: 'Arapça "rahma" (merhamet) kökünden türetilmiş. Osmanlı Türkçesinde kullanılmaya başlanmış.',
-                    synonyms: ['selam', 'hoş geldin', 'hoş bulduk'],
-                    antonyms: ['hoşça kalın', 'elveda'],
-                    variations: {
-                        noun: { singular: 'merhaba', plural: 'merhabalar' },
-                        verb: null,
-                        adjective: null,
-                        adverb: null,
-                        derivedForms: ['merhabalaşmak']
-                    },
-                    usageNotes: 'Resmi olmayan ve dostça. Sözlü ve yazılı iletişimde kullanılır.',
-                    collocations: ['merhaba demek', 'merhaba söylemek', 'merhaba vermek'],
-                    level: 'A1'
-                },
-                'hayat': {
-                    word: 'hayat',
-                    phonetic: '/hɑˈjɑt/',
-                    partOfSpeech: ['isim'],
-                    definitions: [
-                        { pos: 'isim', definition: 'Canlı varlıkları cansız maddelerden ayıran durum.', example: 'Diğer gezegenlerde hayat bulunması devrim niteliğinde olurdu.' },
-                        { pos: 'isim', definition: 'Doğumdan ölüme kadar geçen zaman dilimi.', example: 'Anlamlı ve dolu bir hayat yaşadı.' },
-                        { pos: 'isim', definition: 'Yaşam biçimi ve şekli.', example: 'Kırsal alanda basit bir hayat seçti.' }
-                    ],
-                    etymology: 'Arapça "hayy" (canlı) kökünden türetilmiş. İslami ve Osmanlı geleneğinde yaygın olarak kullanılmıştır.',
-                    synonyms: ['yaşam', 'varlık', 'varoluş', 'biyoloji'],
-                    antonyms: ['ölüm', 'yokluk'],
-                    variations: {
-                        noun: { singular: 'hayat', plural: 'hayatlar' },
-                        verb: null,
-                        adjective: 'hayati',
-                        adverb: null,
-                        derivedForms: ['hayati', 'hayatiyetçi']
-                    },
-                    usageNotes: 'Türkçenin en temel sözcüklerinden biridir. Gerçek ve mecazi anlamda kullanılabilir.',
-                    collocations: ['yaşam tarzı', 'hayat beklentisi', 'hayat döngüsü'],
-                    level: 'A1'
-                }
+                'merhaba': { word: 'merhaba', phonetic: '/merˈhɑbɑ/', partOfSpeech: ['isim', 'ünlem'], definitions: [{ pos: 'ünlem', definition: 'Birini selamlamak veya bir konuşmaya başlamak için kullanılan sözcük.', example: 'Merhaba! Nasılsın?' }, { pos: 'isim', definition: '"Merhaba" sözcüğünün söylenmesi; selamlaşma.', example: 'Arkadaşımdan dostça bir merhaba aldım.' }], etymology: 'Arapça "rahma" (merhamet) kökünden türetilmiş. Osmanlı Türkçesinde kullanılmaya başlanmış.', synonyms: ['selam', 'hoş geldin', 'hoş bulduk'], antonyms: ['hoşça kalın', 'elveda'], variations: { noun: { singular: 'merhaba', plural: 'merhabalar' }, verb: null, adjective: null, adverb: null, derivedForms: ['merhabalaşmak'] }, usageNotes: 'Resmi olmayan ve dostça. Sözlü ve yazılı iletişimde kullanılır.', collocations: ['merhaba demek', 'merhaba söylemek', 'merhaba vermek'], level: 'A1' },
+                'aşk': { word: 'aşk', phonetic: '/ɑʃk/', partOfSpeech: ['isim'], definitions: [{ pos: 'isim', definition: 'Başka bir kişiye karşı duyulan derin ve yoğun bir duygudur.', example: 'Onların aşkı çok güzeldi.' }], etymology: 'Arapça "aşk" kökünden türetilmiş. İslami ve Osmanlı geleneğinde yaygın olarak kullanılmıştır.', synonyms: ['sevgi', 'muhabbet', 'bağlılık', 'tutku'], antonyms: ['nefret', 'kin', 'tiksinti'], variations: { noun: { singular: 'aşk', plural: 'aşklar' }, verb: null, adjective: 'aşkın', adverb: null, derivedForms: ['aşkın', 'aşkla', 'aşktan'] }, usageNotes: 'Türk edebiyatında ve şiirinde çok önemli bir temadır.', collocations: ['gerçek aşk', 'aşk hikayesi', 'aşka düşmek'], level: 'A2' },
+                'hayat': { word: 'hayat', phonetic: '/hɑˈjɑt/', partOfSpeech: ['isim'], definitions: [{ pos: 'isim', definition: 'Canlı varlıkları cansız maddelerden ayıran durum.', example: 'Diğer gezegenlerde hayat bulunması devrim niteliğinde olurdu.' }, { pos: 'isim', definition: 'Doğumdan ölüme kadar geçen zaman dilimi.', example: 'Anlamlı ve dolu bir hayat yaşadı.' }], etymology: 'Arapça "hayy" (canlı) kökünden türetilmiş. İslami ve Osmanlı geleneğinde yaygın olarak kullanılmıştır.', synonyms: ['yaşam', 'varlık', 'varoluş', 'biyoloji'], antonyms: ['ölüm', 'yokluk'], variations: { noun: { singular: 'hayat', plural: 'hayatlar' }, verb: null, adjective: 'hayati', adverb: null, derivedForms: ['hayati', 'hayatiyetçi'] }, usageNotes: 'Türkçenin en temel sözcüklerinden biridir. Gerçek ve mecazi anlamda kullanılabilir.', collocations: ['yaşam tarzı', 'hayat beklentisi', 'hayat döngüsü'], level: 'A1' },
+                'bilgi': { word: 'bilgi', phonetic: '/ˈbɪlɡi/', partOfSpeech: ['isim'], definitions: [{ pos: 'isim', definition: 'Tecrübe veya eğitim yoluyla elde edilen bilgiler, anlayış ve beceriler.', example: 'Onun tarih hakkındaki bilgisi etkileyiciydi.' }], etymology: 'Türkçe "bil" (bilmek) kökünden "-gi" sonekiyle türetilmiş.', synonyms: ['bilim', 'öğrenme', 'hikmet', 'uzmanlık'], antonyms: ['cehaletçi', 'bilinmezlik'], variations: { noun: { singular: 'bilgi', plural: 'bilgiler' }, verb: null, adjective: 'bilgili', adverb: null, derivedForms: ['bilgili', 'bilgisiz', 'bilgisayar'] }, usageNotes: 'Türkçe eğitim ve bilim metinlerinde sık kullanılır.', collocations: ['genel bilgi', 'bilgi tabanı', 'bilgi işleme'], level: 'B1' },
+                'umut': { word: 'umut', phonetic: '/uˈmut/', partOfSpeech: ['isim'], definitions: [{ pos: 'isim', definition: 'Gelecekte olumlu bir sonuç beklentisi ve arzusu.', example: 'Daha iyi bir yarın için umudumuz var.' }], etymology: 'Türkçe kökenli sözcük. Eski Türkçede "umut" olarak geçmektedir.', synonyms: ['beklenti', 'arzu', 'iyimserlik', 'inanç'], antonyms: ['umutsuzluk', 'ümitsizlik', 'karamsarlık'], variations: { noun: { singular: 'umut', plural: 'umutlar' }, verb: null, adjective: 'umutlu', adverb: null, derivedForms: ['umutlu', 'umutlu', 'umutlandırmak'] }, usageNotes: 'Pozitif bir duygu olarak kullanılır. Geleceğe yönelik beklentiyi ifade eder.', collocations: ['umut etmek', 'umut ışığı', 'son umut'], level: 'A2' },
+                'cesaret': { word: 'cesaret', phonetic: '/dʒeˈsɑret/', partOfSpeech: ['isim'], definitions: [{ pos: 'isim', definition: 'Korku, acı veya tehlike karşısında durabilme yeteneği; yiğitlik.', example: 'Onun cesareti herkesi etkiledi.' }], etymology: 'Arapça "cüsr" (cesaret) kökünden türetilmiş. Osmanlı Türkçesinde yaygın olarak kullanılmıştır.', synonyms: ['yiğitlik', 'kahramanlık', 'cüret', 'cesur', 'atılganlık'], antonyms: ['korkaklık', 'korkak', 'çekingenlık'], variations: { noun: { singular: 'cesaret', plural: 'cesaretler' }, verb: null, adjective: 'cesur', adverb: 'cesurca', derivedForms: ['cesur', 'cesurca', 'cesaretlendirmek'] }, usageNotes: 'Türk kültüründe yüksek değer verilen bir erdemdir.', collocations: ['cesaret göstermek', 'cesaret kırmak', 'cesaret vermek'], level: 'B1' },
+                'barış': { word: 'barış', phonetic: '/bɑˈrɪʃ/', partOfSpeech: ['isim'], definitions: [{ pos: 'isim', definition: 'Sakin, huzurlu ve çatışmasız bir durum; savaşın sona ermesi.', example: 'Barış anlaşması bölgeyi sakinleştirdi.' }], etymology: 'Türkçe "bar" (olmak, var olmak) kökünden "-ış" sonekiyle türetilmiş.', synonyms: ['huzur', 'uyum', 'sulh', 'anlaşma'], antonyms: ['savaş', 'çatışma', 'gürültü'], variations: { noun: { singular: 'barış', plural: 'barışlar' }, verb: null, adjective: 'barışçıl', adverb: null, derivedForms: ['barışçıl', 'barışmak', 'barışçı'] }, usageNotes: 'Temel bir insani değer. Savaş karşıtlığını ve huzuru ifade eder.', collocations: ['dünya barışı', 'barış anlaşması', 'barış için'], level: 'B1' },
+                'rüya': { word: 'rüya', phonetic: '/ˈrüjɑ/', partOfSpeech: ['isim'], definitions: [{ pos: 'isim', definition: 'Uyku sırasında görülen görüntüler, düşünceler ve hisler dizisi.', example: 'Dün gece garip bir rüya gördüm.' }], etymology: 'Arapça "rü\'yā" (görme, rüya) kökünden türetilmiş.', synonyms: ['düş', 'hayal', 'fantezi', 'vizyon'], antonyms: ['gerçeklik', 'hakikat'], variations: { noun: { singular: 'rüya', plural: 'rüyalar' }, verb: null, adjective: 'rüyavî', adverb: null, derivedForms: ['rüyavî', 'rüya görmek', 'rüya tabirleri'] }, usageNotes: 'Hem gerçek uyku rüyalarını hem de hayalleri ifade edebilir.', collocations: ['rüya görmek', 'rüya tabirleri', 'rüya gerçek oldu'], level: 'A2' },
+                'güzellik': { word: 'güzellik', phonetic: '/ɡüˈzellɪk/', partOfSpeech: ['isim'], definitions: [{ pos: 'isim', definition: 'Görünüşü veya zihinsel olarak hoşa giden ve çekici olan nitelik.', example: 'Doğanın güzelliği hayranlık uyandırıyor.' }], etymology: 'Türkçe "güzel" sözcüğünden "-lik" sonekiyle türetilmiş.', synonyms: ['cazibe', 'çekicilik', 'zarafet', 'elegans'], antonyms: ['çirkinlik', 'iğrenç', 'hoşlanılmayan'], variations: { noun: { singular: 'güzellik', plural: 'güzellikleri' }, verb: null, adjective: 'güzel', adverb: 'güzelce', derivedForms: ['güzel', 'güzelce', 'güzelleştirmek'] }, usageNotes: 'Estetik bir kavramdır. Görsel ve soyut güzellikleri ifade edebilir.', collocations: ['doğanın güzelliği', 'güzellik yarışması', 'güzellik standartları'], level: 'A2' }
             }
         };
 
@@ -882,7 +741,6 @@
             resultsDiv.innerHTML = '<div class="loading"><span class="spinner"></span>Analyzing...</div>';
             searchBtn.disabled = true;
 
-            // Simulate processing delay
             await new Promise(resolve => setTimeout(resolve, 600));
 
             try {
@@ -894,7 +752,7 @@
                 } else {
                     resultsDiv.innerHTML = `
                         <div class="error-message">
-                            ⚠️ Word not found. Try: "hello", "life", "serendipity" (English), "سلام", "زندگی" (Persian), or "merhaba", "hayat" (Turkish)
+                            ⚠️ Word not found. Try words like: hello, love, beautiful, knowledge, dream, adventure, wisdom, freedom, hope, courage, peace (English) | سلام، عشق، زندگی، دانش، امید، شجاعت، صلح، خیال، جمال (Persian) | merhaba, aşk, hayat, bilgi, umut, cesaret, barış, rüya, güzellik (Turkish)
                         </div>
                     `;
                 }
@@ -909,7 +767,6 @@
             }
         }
 
-        // Initialize
         document.addEventListener('DOMContentLoaded', () => {
             const langSelect = document.getElementById('language');
             langSelect.addEventListener('change', () => {
