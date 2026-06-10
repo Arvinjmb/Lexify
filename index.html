@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Lexify v1.7 — Word Explorer</title>
+    <title>Lexify v1.8 — Word Explorer</title>
     <meta name="description" content="Explore any word deeply — definitions, etymology, tenses, synonyms, and more in English, Persian, and Turkish.">
     <meta name="theme-color" content="#1d1d1f">
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -607,13 +607,14 @@
             <div class="rights-text">
                 This website was created, designed, and published by Arvin Jamebozorg. Unauthorized reproduction, copying, or distribution of any content on this site is strictly prohibited. All creative rights belong exclusively to Arvin Jamebozorg.
             </div>
-            <div class="version-info">Lexify v1.7 • Powered by Advanced Linguistic AI Model</div>
+            <div class="version-info">Lexify v1.8 • Powered by Advanced Linguistic AI Model</div>
         </div>
     </footer>
 
     <script>
         const HISTORY_KEY = 'lexify_history';
         const MAX_HISTORY = 20;
+        let currentWord = '';
         let currentResultLanguage = 'en';
 
         const wordDatabase = {
@@ -702,9 +703,9 @@
                     <div class="result-header">
                         <h2>${data.word}</h2>
                         <div class="result-lang-switcher">
-                            <button class="lang-btn ${language === 'en' ? 'active' : ''}" onclick="changeResultLanguage('en', '${data.word}')">EN</button>
-                            <button class="lang-btn ${language === 'fa' ? 'active' : ''}" onclick="changeResultLanguage('fa', '${data.word}')">FA</button>
-                            <button class="lang-btn ${language === 'tr' ? 'active' : ''}" onclick="changeResultLanguage('tr', '${data.word}')">TR</button>
+                            <button class="lang-btn ${language === 'en' ? 'active' : ''}" onclick="changeResultLanguage('en')">EN</button>
+                            <button class="lang-btn ${language === 'fa' ? 'active' : ''}" onclick="changeResultLanguage('fa')">FA</button>
+                            <button class="lang-btn ${language === 'tr' ? 'active' : ''}" onclick="changeResultLanguage('tr')">TR</button>
                         </div>
                     </div>
                     
@@ -779,12 +780,14 @@
             return html;
         }
 
-        function changeResultLanguage(lang, word) {
+        function changeResultLanguage(lang) {
             currentResultLanguage = lang;
-            const result = findWord(word, lang);
-            if (result) {
-                const resultsDiv = document.getElementById('results');
-                resultsDiv.innerHTML = renderResult(result, lang);
+            if (currentWord) {
+                const result = findWord(currentWord, lang);
+                if (result) {
+                    const resultsDiv = document.getElementById('results');
+                    resultsDiv.innerHTML = renderResult(result, lang);
+                }
             }
         }
 
@@ -809,6 +812,7 @@
                 const result = findWord(word, language);
                 
                 if (result) {
+                    currentWord = word;
                     addToHistory(word, language);
                     currentResultLanguage = language;
                     resultsDiv.innerHTML = renderResult(result, language);
