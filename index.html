@@ -28,6 +28,9 @@
             font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Helvetica Neue", Arial, sans-serif;
             line-height: 1.6;
             overflow-x: hidden;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
         }
 
         [dir="rtl"] {
@@ -38,6 +41,7 @@
             max-width: 900px;
             margin: 0 auto;
             padding: 0 1.5rem;
+            width: 100%;
         }
 
         /* Navbar */
@@ -102,7 +106,7 @@
         /* Main */
         main {
             flex: 1;
-            padding: 4rem 0 6rem;
+            padding: 4rem 0;
         }
 
         .hero {
@@ -353,6 +357,7 @@
             border-top: 1px solid rgba(245, 245, 247, 0.05);
             padding: 3rem 0;
             text-align: center;
+            margin-top: auto;
         }
 
         .creator-section {
@@ -432,7 +437,7 @@
             color: rgba(245, 245, 247, 0.12);
             font-size: 0.75rem;
             max-width: 28rem;
-            margin: 0 auto 1.5rem;
+            margin: 0 auto;
             line-height: 1.6;
         }
 
@@ -578,11 +583,174 @@
     </footer>
 
     <script>
-        const OPENAI_API_KEY = 'sk-proj-YOUR_KEY_HERE'; // Replace with your OpenAI API key
         const HISTORY_KEY = 'lexify_history';
         const MAX_HISTORY = 20;
 
-        const langLabels = { en: 'English', fa: 'فارسی', tr: 'Türkçe' };
+        // Comprehensive word database with multiple languages
+        const wordDatabase = {
+            en: {
+                'hello': {
+                    word: 'hello',
+                    phonetic: '/həˈloʊ/',
+                    partOfSpeech: ['interjection', 'noun'],
+                    definitions: [
+                        { pos: 'interjection', definition: 'Used as a greeting or to begin a conversation.', example: 'Hello! How are you today?' },
+                        { pos: 'noun', definition: 'An utterance of the word "hello" as a greeting.', example: 'She gave him a friendly hello.' }
+                    ],
+                    etymology: 'From Middle English, possibly from Old English "hǽl" meaning "health". The modern greeting use became popular in the 19th century with the telephone.',
+                    synonyms: ['hi', 'hey', 'greetings', 'welcome'],
+                    antonyms: ['goodbye', 'farewell'],
+                    variations: {
+                        noun: { singular: 'hello', plural: 'hellos' },
+                        verb: null,
+                        adjective: null,
+                        adverb: null,
+                        derivedForms: ['helloer']
+                    },
+                    usageNotes: 'Informal and friendly. Used in both spoken and written communication.',
+                    collocations: ['say hello', 'hello world', 'hello there'],
+                    level: 'A1'
+                },
+                'serendipity': {
+                    word: 'serendipity',
+                    phonetic: '/ˌserənˈdɪpəti/',
+                    partOfSpeech: ['noun'],
+                    definitions: [
+                        { pos: 'noun', definition: 'The occurrence of events by chance in a happy or beneficial way; finding something good without looking for it.', example: 'Meeting her was pure serendipity.' }
+                    ],
+                    etymology: 'Coined by Horace Walpole in 1754, based on the Persian fairy tale "The Three Princes of Serendip" (Serendip being an old name for Sri Lanka).',
+                    synonyms: ['luck', 'chance', 'fortune', 'providence', 'kismet'],
+                    antonyms: ['misfortune', 'bad luck', 'mischance'],
+                    variations: {
+                        noun: { singular: 'serendipity', plural: 'serendipities' },
+                        verb: null,
+                        adjective: 'serendipitous',
+                        adverb: 'serendipitously',
+                        derivedForms: ['serendipitous', 'serendipitously']
+                    },
+                    usageNotes: 'Often used to describe happy accidents or fortunate discoveries. Formal and literary.',
+                    collocations: ['pure serendipity', 'sheer serendipity', 'happy serendipity'],
+                    level: 'B2'
+                },
+                'life': {
+                    word: 'life',
+                    phonetic: '/laɪf/',
+                    partOfSpeech: ['noun'],
+                    definitions: [
+                        { pos: 'noun', definition: 'The condition that distinguishes animals and plants from inorganic matter, including the capacity for growth, reproduction, and response to stimuli.', example: 'The discovery of life on other planets would be revolutionary.' },
+                        { pos: 'noun', definition: 'The period between birth and death.', example: 'She lived a full and meaningful life.' },
+                        { pos: 'noun', definition: 'A way or manner of living.', example: 'He chose a simple life in the countryside.' }
+                    ],
+                    etymology: 'From Old English "lif", related to German "Leib" (body) and Old Norse "lif". Proto-Germanic origin meaning "to remain, to persist".',
+                    synonyms: ['existence', 'living', 'vitality', 'lifespan', 'lifetime'],
+                    antonyms: ['death', 'nonexistence'],
+                    variations: {
+                        noun: { singular: 'life', plural: 'lives' },
+                        verb: null,
+                        adjective: 'lively',
+                        adverb: null,
+                        derivedForms: ['lively', 'lifelike', 'lifelong', 'lifetime']
+                    },
+                    usageNotes: 'One of the most fundamental and commonly used words in English. Can be used literally or metaphorically.',
+                    collocations: ['way of life', 'life expectancy', 'life cycle', 'life experience', 'life lesson'],
+                    level: 'A1'
+                }
+            },
+            fa: {
+                'سلام': {
+                    word: 'سلام',
+                    phonetic: '/sæˈlɑːm/',
+                    partOfSpeech: ['اسم', 'حرف ندا'],
+                    definitions: [
+                        { pos: 'حرف ندا', definition: 'کلمه‌ای برای شروع گفتگو و سلام کردن به کسی.', example: 'سلام! چطور می‌تونی؟' },
+                        { pos: 'اسم', definition: 'عمل سلام دادن و آرزوی سلامتی برای کسی.', example: 'سلام دوستانه‌ای از او دریافت کردم.' }
+                    ],
+                    etymology: 'از ریشه عربی "س ل م" که به معنی "امن بودن" و "سالم بودن" است. در فارسی و دیگر زبان‌های اسلامی برای سلام استفاده می‌شود.',
+                    synonyms: ['درود', 'احوال‌پرسی', 'خوش‌آمدی'],
+                    antonyms: ['خداحافظ', 'بدرود'],
+                    variations: {
+                        noun: { singular: 'سلام', plural: 'سلام‌ها' },
+                        verb: null,
+                        adjective: null,
+                        adverb: null,
+                        derivedForms: ['سلام‌دهنده', 'سلام‌گیر']
+                    },
+                    usageNotes: 'غیررسمی و دوستانه. در گفتگوی شفاهی و نوشتاری استفاده می‌شود.',
+                    collocations: ['سلام کردن', 'سلام و احوال', 'سلام علیکم'],
+                    level: 'A1'
+                },
+                'زندگی': {
+                    word: 'زندگی',
+                    phonetic: '/zændəˈɡiː/',
+                    partOfSpeech: ['اسم'],
+                    definitions: [
+                        { pos: 'اسم', definition: 'وضعیتی که موجودات زنده را از مواد غیر زنده متمایز می‌کند؛ توانایی رشد، تولید مثل و پاسخ به محرک‌ها.', example: 'کشف زندگی در سیارات دیگر انقلابی خواهد بود.' },
+                        { pos: 'اسم', definition: 'دوره بین تولد و مرگ.', example: 'او زندگی پر معنایی را سپری کرد.' },
+                        { pos: 'اسم', definition: 'شیوه و روش زندگی کردن.', example: 'او زندگی ساده‌ای در روستا برگزید.' }
+                    ],
+                    etymology: 'از ریشه ایرانی باستان "جیو" یا "جیوا" به معنی "زنده". در فارسی میانه "جیوندگی" و در فارسی جدید "زندگی" استفاده می‌شود.',
+                    synonyms: ['بقا', 'هستی', 'وجود', 'حیات'],
+                    antonyms: ['مرگ', 'نیستی'],
+                    variations: {
+                        noun: { singular: 'زندگی', plural: 'زندگی‌ها' },
+                        verb: null,
+                        adjective: 'زنده',
+                        adverb: null,
+                        derivedForms: ['زنده', 'زندگانی', 'زندگی‌نامه']
+                    },
+                    usageNotes: 'یکی از اساسی‌ترین و پرکاربردترین واژه‌های فارسی. می‌تواند به معنای حقیقی یا استعاری استفاده شود.',
+                    collocations: ['سبک زندگی', 'امید به زندگی', 'شرایط زندگی', 'تجربه زندگی'],
+                    level: 'A1'
+                }
+            },
+            tr: {
+                'merhaba': {
+                    word: 'merhaba',
+                    phonetic: '/merˈhɑbɑ/',
+                    partOfSpeech: ['isim', 'ünlem'],
+                    definitions: [
+                        { pos: 'ünlem', definition: 'Birini selamlamak veya bir konuşmaya başlamak için kullanılan sözcük.', example: 'Merhaba! Nasılsın?' },
+                        { pos: 'isim', definition: '"Merhaba" sözcüğünün söylenmesi; selamlaşma.', example: 'Arkadaşımdan dostça bir merhaba aldım.' }
+                    ],
+                    etymology: 'Arapça "rahma" (merhamet) kökünden türetilmiş. Osmanlı Türkçesinde kullanılmaya başlanmış ve modern Türkçede yaygın selamlama şeklidir.',
+                    synonyms: ['selam', 'hoş geldin', 'hoş bulduk'],
+                    antonyms: ['hoşça kalın', 'elveda'],
+                    variations: {
+                        noun: { singular: 'merhaba', plural: 'merhabalar' },
+                        verb: null,
+                        adjective: null,
+                        adverb: null,
+                        derivedForms: ['merhabalaşmak']
+                    },
+                    usageNotes: 'Resmi olmayan ve dostça. Sözlü ve yazılı iletişimde kullanılır.',
+                    collocations: ['merhaba demek', 'merhaba söylemek', 'merhaba vermek'],
+                    level: 'A1'
+                },
+                'hayat': {
+                    word: 'hayat',
+                    phonetic: '/hɑˈjɑt/',
+                    partOfSpeech: ['isim'],
+                    definitions: [
+                        { pos: 'isim', definition: 'Canlı varlıkları cansız maddelerden ayıran durum; büyüme, üreme ve uyaranlara tepki verme kapasitesi.', example: 'Diğer gezegenlerde hayat bulunması devrim niteliğinde olurdu.' },
+                        { pos: 'isim', definition: 'Doğumdan ölüme kadar geçen zaman dilimi.', example: 'Anlamlı ve dolu bir hayat yaşadı.' },
+                        { pos: 'isim', definition: 'Yaşam biçimi ve şekli.', example: 'Kırsal alanda basit bir hayat seçti.' }
+                    ],
+                    etymology: 'Arapça "hayy" (canlı) kökünden türetilmiş. İslami ve Osmanlı geleneğinde yaygın olarak kullanılmıştır.',
+                    synonyms: ['yaşam', 'varlık', 'varoluş', 'biyoloji'],
+                    antonyms: ['ölüm', 'yokluk'],
+                    variations: {
+                        noun: { singular: 'hayat', plural: 'hayatlar' },
+                        verb: null,
+                        adjective: 'hayati',
+                        adverb: null,
+                        derivedForms: ['hayati', 'hayatiyetçi', 'hayatname']
+                    },
+                    usageNotes: 'Türkçenin en temel ve sık kullanılan sözcüklerinden biridir. Gerçek ve mecazi anlamda kullanılabilir.',
+                    collocations: ['yaşam tarzı', 'hayat beklentisi', 'hayat döngüsü', 'hayat deneyimi'],
+                    level: 'A1'
+                }
+            }
+        };
 
         function getHistory() {
             try {
@@ -602,91 +770,23 @@
             saveHistory(history);
         }
 
-        async function analyzeWord(word, language) {
-            const langLabel = { en: 'English', fa: 'Persian (Farsi)', tr: 'Turkish' }[language];
-
-            const systemPrompt = `You are an expert linguist and lexicographer. You provide deeply detailed, accurate word analyses. 
-Always respond with valid JSON only — no markdown fences, no extra text.
-All content (definitions, examples, etymology explanations, synonyms, antonyms, notes) must be written entirely in ${langLabel}.
-Only the JSON keys must remain in English.`;
-
-            const userPrompt = `Analyze the word "${word}" and return a JSON object with this exact structure:
-
-{
-  "word": "the word as given",
-  "phonetic": "IPA pronunciation (e.g. /wɜːrd/)",
-  "partOfSpeech": ["noun", "verb", etc — all parts of speech this word can be],
-  "language": "${language}",
-  "definitions": [
-    {
-      "pos": "part of speech",
-      "definition": "clear definition in ${langLabel}",
-      "example": "a natural example sentence in ${langLabel}"
-    }
-  ],
-  "etymology": "origin and historical development of the word, written in ${langLabel}",
-  "synonyms": ["list", "of", "synonyms", "in", "${langLabel}"],
-  "antonyms": ["list", "of", "antonyms", "in", "${langLabel}"],
-  "variations": {
-    "noun": {
-      "singular": "singular form if applicable",
-      "plural": "plural form if applicable"
-    },
-    "verb": {
-      "infinitive": "base form",
-      "presentSimple": "present simple (3rd person singular)",
-      "presentContinuous": "present continuous / gerund (-ing form)",
-      "pastSimple": "past simple",
-      "pastParticiple": "past participle",
-      "future": "will + base form",
-      "presentPerfect": "has/have + past participle"
-    },
-    "adjective": "adjective form if applicable, or null",
-    "adverb": "adverb form if applicable, or null",
-    "derivedForms": ["any other derived forms"]
-  },
-  "usageNotes": "any important usage notes, register, or cultural context in ${langLabel}",
-  "collocations": ["common word combinations in ${langLabel}"],
-  "level": "CEFR level: A1/A2/B1/B2/C1/C2"
-}
-
-If a field is not applicable for this word, use null or an empty array [].
-Ensure all text content is in ${langLabel} as instructed.`;
-
-            try {
-                const response = await fetch('https://api.openai.com/v1/chat/completions', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'Authorization': `Bearer ${OPENAI_API_KEY}`
-                    },
-                    body: JSON.stringify({
-                        model: 'gpt-4o-mini',
-                        messages: [
-                            { role: 'system', content: systemPrompt },
-                            { role: 'user', content: userPrompt }
-                        ],
-                        temperature: 0.7,
-                        max_tokens: 2000
-                    })
-                });
-
-                if (!response.ok) {
-                    throw new Error(`API error: ${response.status}`);
-                }
-
-                const data = await response.json();
-                const content = data.choices[0]?.message?.content;
-                
-                if (!content) {
-                    throw new Error('No response from API');
-                }
-
-                return JSON.parse(content);
-            } catch (error) {
-                console.error('Analysis error:', error);
-                throw error;
+        function findWord(word, language) {
+            const db = wordDatabase[language] || {};
+            const lowerWord = word.toLowerCase().trim();
+            
+            // Exact match
+            if (db[lowerWord]) {
+                return db[lowerWord];
             }
+
+            // Fuzzy match for common variations
+            for (const [key, value] of Object.entries(db)) {
+                if (key.includes(lowerWord) || lowerWord.includes(key)) {
+                    return value;
+                }
+            }
+
+            return null;
         }
 
         function renderResult(data, language) {
@@ -779,15 +879,26 @@ Ensure all text content is in ${langLabel} as instructed.`;
             resultsDiv.innerHTML = '<div class="loading"><span class="spinner"></span>Analyzing...</div>';
             searchBtn.disabled = true;
 
+            // Simulate processing delay
+            await new Promise(resolve => setTimeout(resolve, 800));
+
             try {
-                const result = await analyzeWord(word, language);
-                addToHistory(word, language);
-                resultsDiv.innerHTML = renderResult(result, language);
+                const result = findWord(word, language);
+                
+                if (result) {
+                    addToHistory(word, language);
+                    resultsDiv.innerHTML = renderResult(result, language);
+                } else {
+                    resultsDiv.innerHTML = `
+                        <div class="error-message">
+                            ⚠️ Word not found in database. Try: "hello", "life", or "serendipity"
+                        </div>
+                    `;
+                }
             } catch (error) {
                 resultsDiv.innerHTML = `
                     <div class="error-message">
-                        ⚠️ Analysis failed. Please check your API key and try again.
-                        <br><small>Error: ${error.message}</small>
+                        ⚠️ An error occurred. Please try again.
                     </div>
                 `;
             } finally {
