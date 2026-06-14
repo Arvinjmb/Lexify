@@ -1,2 +1,2 @@
 # Lexify
-LLM
+Project on pause.
